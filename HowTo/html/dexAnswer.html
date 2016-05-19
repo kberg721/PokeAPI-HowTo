@@ -1,0 +1,275 @@
+<!--
+	Kyle Bergman
+	CS290
+	API How To
+	The answer page breaks down how to make the Pokedex from the previous page.
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+  		<title>PokeAPI Tutorial</title>
+		<link href="../css/dex.css" type="text/css" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" 
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	</head>
+
+	<body>
+		<main id="content" class="container-fluid">
+
+			<div id="menu">
+				<div id="menuChunk1">
+					<a href="index.html">
+						<p id="titleText">The PokeAPI Tutorial</p>
+					</a>
+				</div>
+
+				<div id="menuChunk2" class="dropdown">
+  					<button id="menubtn" class="dropdown">Table of Contents!</button>
+					<div id="myDropdown" class="dropdown-content">
+						<a href="introduction.html">Introduction</a>
+						<a href="APICall.html">The API Call</a>
+						<a href="callExample.html">Displaying Your PokeInfo</a>
+						<a href="dexAPI.html">Making a Pokedex</a>
+						<a href="dexAnswer.html">Inside the Pokedex</a>
+						<a href="final.html">Conclusion</a>
+					</div>
+				</div>
+			</div>
+			<div id="mainContent">
+				<h1>Under the hood</h1>
+
+<pre><code>
+/* Attach our funciton to our submit button */
+document.addEventListener('DOMContentLoaded', bindButton);
+
+/* Bind our function to our form button */
+function bindButton() {
+	document.getElementById('pokedexSubmit').addEventListener('click', function(event){
+
+		/*Make the response object */
+		var request = new XMLHttpRequest();
+
+		/* The value we obtain from the form */
+		var pokeID = document.getElementById("pokemonId").value;
+
+		/* Make the request */
+		request.open("GET", "https://pokeapi.co/api/v2/pokemon/" + pokeID , true);
+
+		/* Put our info on the page! */
+		request.addEventListener("load", function() {
+			if(request.status >= 200 && request.status < 400){
+
+				/* Get our JSON object */
+		    	var response = JSON.parse(request.responseText);
+
+		    	/* Create our Pokedex Entry and append it to the page!*/
+		    	var dexEntry = document.createElement("div");
+		    	document.getElementById("result").appendChild(dexEntry);
+
+		    	/* Get the sprite of the pokemon */
+		    	var sprite = document.createElement("img");
+		    	sprite.src = response.sprites.front_default;
+		    	dexEntry.appendChild(sprite);
+
+		    	/* Create a list of all the attributes */
+		    	var description = document.createElement("ul");
+
+		    	/* Get the pokemon's name */
+		    	var name = document.createElement("li");
+		    	name.innerText = "Name: " + response.name;
+		    	description.appendChild(name);
+
+		    	/* Get the pokemon's types! */
+		    	var type = document.createElement("li");
+		    	type.innerHTML = "Type(s): ";
+		    	for(var i = 0; i < response.types.length - 1; i++) {
+		    		type.innerHTML += response.types[i].type.name + ", ";
+		    	}
+		    	type.innerHTML += response.types[response.types.length - 1].type.name;
+		    	description.appendChild(type);
+
+		    	/* Get the pokemon's height */
+		    	var height = document.createElement("li");
+		    	height.innerHTML = "height: " + response.height;
+		    	description.appendChild(height);
+
+		    	/* Get the pokemon's weight */
+		    	var weight = document.createElement("li");
+		    	weight.innerHTML = "weight: " + response.weight;
+		    	description.appendChild(weight);
+
+		    	/* Make a list of all the pokemon's base stats */
+		    	var statsList = document.createElement("li");
+		    	statsList.innerHTML = "Base Stats: ";
+		    	var stats = document.createElement("ul");
+		    	statsList.appendChild(stats);
+		    	description.appendChild(statsList);
+		    	var statsArr = response.stats;
+		    	for(var j = 0; j < statsArr.length; j++) {
+		    		var nextStat = document.createElement("li");
+		    		var name = statsArr[j].stat.name;
+		    		var value = statsArr[j].base_stat;
+
+		    		nextStat.innerHTML = name + ": " + value;
+		    		stats.appendChild(nextStat);
+		    	}
+
+		    	/* Append our list of attributes to our pokedex entry */ 
+		 		dexEntry.appendChild(description);
+
+		  	} else {
+		  		/* our request failed! Let the user know! */
+		    	console.log("Error in network request: " + request.statusText);
+		    }});   
+
+		request.send(null);
+		event.preventDefault();
+	})
+		
+}
+</code></pre>
+
+				<p>It's not as bad as it looks, let's break it down! </p>
+				<hr>
+				<div>
+					<h3>Piece by Piece</h3>
+					<p>
+						This is something that should come so naturally by now, you can recite the steps
+						in your sleep! But making the request is this part of the above code:
+					</p>
+
+<pre><code>
+		/*Make the response object */
+		var request = new XMLHttpRequest();
+
+		/* The value we obtain from the form */
+		var pokeID = document.getElementById("pokemonId").value;
+
+		/* Make the request */
+		request.open("GET", "https://pokeapi.co/api/v2/pokemon/" + pokeID , true);
+
+		request.addEventListener("load", function() {
+		if(request.status >= 200 && request.status < 400){
+
+		/* Get our JSON object */
+		var response = JSON.parse(request.responseText);
+
+</code></pre>
+				<p>
+					See, it doesn't look so scary now that it's super small! First and foremost, all of the code
+					discussed here and down below will be within a function that is bound to a submit button on
+					a form (as seen on the previous page). If these steps are unfamiliar to you, please look up
+					HTML forms, form submissions, and binding javascript functions to buttons before trying to
+					create this Pokedex. What we have here is our simple three step process. Then, just as before,
+					we parse our response into a JSON object assuming we get a good status code.
+				</p>	
+
+<pre><code>
+		/* Create our Pokedex Entry and append it to the page!*/
+	 	var dexEntry = document.createElement("div");
+	    	document.getElementById("result").appendChild(dexEntry);
+
+		/* Get the sprite of the pokemon */
+		var sprite = document.createElement("img");
+		sprite.src = response.sprites.front_default;
+		dexEntry.appendChild(sprite);
+</code></pre>
+
+				<p>
+					This is where the fun stuff begins. From here we will use the attributes of "response" to fill
+					the page with data. First of all, we're going to need a picture! The PokeAPI provides several
+					different sprites to choose from, depending on what you want. In this case, we will just use the standard 
+					front_default sprite. To get this, we need to access the sprites object and then the front_default attribute 
+					within. This will give us the img source that we can add to a dynamically created img tag.
+				</p>
+
+<pre><code>
+		/* Create a list of all the attributes */
+		var description = document.createElement("ul");
+
+		/* Get the pokemon's name */
+		var name = document.createElement("li");
+		name.innerText = "Name: " + response.name;
+		description.appendChild(name);
+
+		/* Get the pokemon's height */
+		var height = document.createElement("li");
+		height.innerHTML = "height: " + response.height;
+		description.appendChild(height);
+
+		/* Get the pokemon's weight */
+		var weight = document.createElement("li");
+		weight.innerHTML = "weight: " + response.weight;
+		description.appendChild(weight);
+</code></pre>
+
+				<p>
+					In this example, we'll store the attributes in a simple unordered list called "description".
+					Next, we'll retrieve the name, height, and weight of the pokemon from their respective fields
+					in the response object. See? It's simple! Just make an element to add to the list, add the attribute
+					to the list item's innerHTML, and append our new list item to our description. We'll see some more
+					interesting fields in just a moment.
+				</p>	
+
+<pre><code>
+		/* Get the pokemon's types! */
+		var type = document.createElement("li");
+		type.innerHTML = "Type(s): ";
+		for(var i = 0; i < response.types.length - 1; i++) {
+			type.innerHTML += response.types[i].type.name + ", ";
+		}
+		type.innerHTML += response.types[response.types.length - 1].type.name;
+		description.appendChild(type);
+
+		/* Make a list of all the pokemon's base stats */
+		var statsList = document.createElement("li");
+		statsList.innerHTML = "Base Stats: ";
+		var stats = document.createElement("ul");
+		statsList.appendChild(stats);
+		description.appendChild(statsList);
+		var statsArr = response.stats;
+		for(var j = 0; j < statsArr.length; j++) {
+			var nextStat = document.createElement("li");
+			var name = statsArr[j].stat.name;
+			var value = statsArr[j].base_stat;
+
+			nextStat.innerHTML = name + ": " + value;
+			stats.appendChild(nextStat);
+		}
+
+		/* Append our list of attributes to our pokedex entry */ 
+		dexEntry.appendChild(description);
+</code></pre>
+				
+				<p>
+					Now we'll work with fields that are arrays! It's not too dissimilar from what we just did.
+					This time, the "types" field is an array, so we must cycle through the array and append
+					the names of the types to our list item element. Similarly, for the base statistics for
+					each pokemon, we can just iterate through the array in the stats field and concatenate
+					The names and values into a list item.
+				</p>
+
+				<p>
+					Finally, we send null and use PreventDefault to make sure everything works properly. Well there you
+					have it! Go ahead and try making your own; add some new features like what routes the pokemon live, 
+					what are some of their abilities, and what egg groups do they belong to? There are many, many combinations
+					and it's up to you what to make!
+				</p>
+
+
+				</div>
+				
+				<div id="btnsDiv">
+					<a href="dexAPI.html"><button class="btn">Back</button></a>
+					<a href="final.html"><button class="btn">Next</button></a>
+				</div>
+			</div>
+		</main>
+
+	<script src="../scripts/dex.js" type="text/javascript"></script>
+	</body>
+
+
+</html>

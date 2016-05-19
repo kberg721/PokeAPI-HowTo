@@ -1,0 +1,113 @@
+<!--
+	Kyle Bergman
+	CS290
+	API How To
+	The example page shows how to make the API call and populate some HTML
+-->
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+  		<title>PokeAPI Tutorial</title>
+  		<link href="../favicon.ico" rel="icon" type="image/x-icon" />
+		<link href="../css/APICall.css" type="text/css" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" 
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	</head>
+
+	<body>
+		<main id="content" class="container-fluid">
+			<div id="menu">
+				<div id="menuChunk1">
+					<a href="index.html">
+						<p id="titleText">The PokeAPI Tutorial</p>
+					</a>
+				</div>
+				<div id="menuChunk2" class="dropdown">
+  					<button id="menubtn" class="dropdown">Table of Contents!</button>
+  						<div id="myDropdown" class="dropdown-content">
+   							<a href="introduction.html">Introduction</a>
+							<a href="APICall.html">The API Call</a>
+							<a href="callExample.html">Displaying Your PokeInfo</a>
+							<a href="dexAPI.html">Making a Pokedex</a>
+							<a href="dexAnswer.html">Inside the Pokedex</a>
+							<a href="final.html">Conclusion</a>
+  						</div>
+				</div>
+			</div>
+			<div id="mainContent">
+				<h1>HTML Me About it!</h1>
+				<h4>Excuse the terrible pun, let's get to work!</h4>
+				<a href="#call"><button class="btn">Let's Go!</button></a>
+
+				<hr style="margin-top: 30%;">
+				<h3 id="call">Making a Request</h3>
+				<p>It all starts with making a new request object</p>
+
+<pre><code>var request = new XMLHttpRequest();</code></pre>
+
+				<p>
+					In order to talk with the API, we will need to construct an XMLHttpRequest object. 
+					With this, we will be able to use it's "open" method to make the request and get our
+					pokemon facts. If you recall, our request will consist of three parts. Can you remember them?
+					If not, here's a reminder. We will define them in variables for readability and append them
+					together when we make the request.
+				</p>
+
+				<p>
+					From here, we will use what's called AJAX, or asynchronous javascript and XML, to make our request. AJAX
+					is a service that will allow a website to make requests even after the page has loaded, and will let other
+					processes run while the server is getting the information. It makes processes much more seamless and will
+					help us get the pokemon information we need.
+				<p>
+
+<pre><code>request.open("GET", "http://pokeapi.co/api/v2/pokemon/25", true);</code></pre>
+
+				<p>
+					So what does this mean? The "GET" argument determines what kind of a request this is, which is, as you 
+					guessed it, a "GET" request. A "GET" request will retrieve data from a specified source while a "POST"
+					request will process certain information given to another resource. The PokeAPI only allows "GET" requests,
+					but this makes sense because all we need to do it retrieve what information we want. Next comes our actual
+					request. This is something we are VERY familiar with after the previous lesson. It contains our magic three
+					part formula which will let us obtain any poke-datum we could want. Lastly, the "true" indicates whether the
+					request will be made asynchronously. Word to the wise, there is rarely a need to do things synchronously, so 
+					much so that the browser will actually give you a warning if you put false into that parameter.
+				</p>
+				<p>
+					So how do we see what we got back? Well, we can use some javascript to log it to the console or populate some
+					HTML with our data. This is the crux of our lesson, and will empower you to spread Pokemon to the masses in 
+					almost any way you could possibly want! Let's take a look.
+				</p>
+				<iframe
+  					style="width: 100%; height: 300px"
+  					src="http://jsfiddle.net/Kberg721/7qaxenmb/16/embedded/js,html,result">
+				</iframe>
+				<p>
+					Take a look at the code, not that bad right? We just made the request, opened it, and attached
+					the result to a div element in our HTML. A couple of things I did not explain before might give some confusion
+					so I'll do that now. After we opened our request, the data we get back is stored in the "responseText" field
+					of our variable named "request". In order to get our JSON from this responseText, we use the parse method of
+					the JSON class to get what we saw on the previous page. In the new variable "obj", we now have all of the 
+					fields we desire about number 25, Pikachu! To show that our request worked, I simply put the name field of
+					the object into our div. Under the results tab, you will see that Pikachu is on the page. Finally, we want to
+					let the API know that we are done sending requests, so we use request.send(null) to indicate that message.
+					Now with the basic functionality in place, let's put all of our HTML, JavaScript, and AJAX knowledge together
+					show what we can REALLY do with these cool requests! Onto the final lesson!
+				</p>
+				<hr>
+
+
+				<div id="btnsDiv">
+					<a href="APICall.html"><button class="btn">Back</button></a>
+					<a href="dexAPI.html"><button class="btn">Next</button></a>
+				</div>
+			</div>
+		</main>
+
+	<script src="../scripts/callScript.js" type="text/javascript"></script>
+	</body>
+
+
+</html>

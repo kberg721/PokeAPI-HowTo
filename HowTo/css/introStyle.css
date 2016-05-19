@@ -1,0 +1,115 @@
+body, html {
+	height: 100%;
+}
+
+body {
+	background-image: url(https://cdn0.vox-cdn.com/thumbor/JPT549o0bgkVypa40mRQj3Mkj0Q=/180x0:1872x952/1280x720/cdn0.vox-cdn.com/uploads/chorus_image/image/49104733/pokemon-list.0.0.png);
+}
+
+#content {
+	background-color: white;
+	opacity: 0.95;
+	height: 100%;
+	width: 85%;
+	padding: 0px;
+	margin: 0 auto;
+}
+
+/* Used for top part of main page */
+#titleText {
+	color: white;
+	font-family: "Helvetica Neue", Tahoma, sans-serif;
+	font-size: 32pt;
+	text-align: left;
+	margin-top: 15px;
+	margin-left: 15px;
+}
+
+#menu {
+	background-color: #e60000;
+	opacity: 1.0;
+	height: 80px;
+	width: 100%;
+}
+
+#menuChunk1 {
+	float: left;
+}
+
+#menuChunk2 {
+	float: right;
+}
+
+
+
+/* Used for Dropdown Menu */
+.dropdown {
+    background-color: #e60000;
+    color: white;
+    padding-top: 15px;
+    padding-right: 50px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    margin-top: 28.5px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+/* Used for body of home page */
+#greeting {
+	background-color: white;
+	margin-top: 100px;
+	text-align: center;
+}
+
+.info {
+	margin-top: 5%;
+	text-align: center;
+}
+
+ul {
+	list-style-position: inside;
+	padding: 0px;
+	text-align: center;
+}
+
+#btnsDiv {
+	padding-bottom: 10%;
+	padding-top: 5%;
+	text-align: center;
+}
+
+.btn {
+	background-color: #e60000;
+	color: white;
+	width: 100px;
+}
+
+
+
+
+
